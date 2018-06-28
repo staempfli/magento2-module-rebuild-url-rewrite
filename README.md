@@ -56,6 +56,12 @@ bin/magento urlrewrite:rebuild categories -s=1,2
 ```
 
 Any combination is possible.
+
+See `--help` for more information
+
+```php  
+bin/magento urlrewrite:rebuild --help  
+```
   
 ## Requirements  
   
