@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Staempfli\RebuildUrlRewrite\Model\UrlRewriteInterface" type="Staempfli\RebuildUrlRewrite\Model\UrlRewrite" />
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="rebuildUrlRewrite" xsi:type="object">Staempfli\RebuildUrlRewrite\Console\Command\RebuildCommand</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
