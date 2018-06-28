@@ -13,5 +13,5 @@ interface UrlRewriteEntityInterface
      * @param int $storeId
      * @return mixed
      */
-    public function rebuild(int $storeId);
+    public function rebuild(int $storeId, array $arguments = []);
 }

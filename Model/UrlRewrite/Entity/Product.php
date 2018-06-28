@@ -37,11 +37,15 @@ class Product implements UrlRewriteEntityInterface
         $this->productcollection = $productCollection;
     }
 
-    public function rebuild(int $storeId)
+    public function rebuild(int $storeId, array $arguments = [])
     {
         $this->productcollection->clear();
         $this->productcollection->setStoreId($storeId)
             ->addAttributeToSelect(['url_path', 'url_key']);
+
+        if ($arguments) {
+            $this->productcollection->addFieldToFilter('entity_id', ['in' => $arguments]);
+        }
 
         $this->urlRewrite
             ->setStoreId($storeId)

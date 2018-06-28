@@ -107,12 +107,12 @@ final class RebuildCommand extends Command
         foreach ($stores as $storeId => $storeCode) {
             if ($argument && in_array('categories', $argument)) {
                 $output->writeln(sprintf('Rebuild category urls for store: [%s]', $storeCode));
-                $this->categoryFactory->create()->rebuild($storeId);
+                $this->categoryFactory->create()->rebuild($storeId, $this->getOptionValue(self::INPUT_CAEGORIES));
             }
 
             if ($argument && in_array('products', $argument)) {
                 $output->writeln(sprintf('Rebuild product urls for store: [%s]', $storeCode));
-                $this->productFactory->create()->rebuild($storeId);
+                $this->productFactory->create()->rebuild($storeId, $this->getOptionValue(self::INPUT_PRODUCTS));
             }
 
             if ($argument && in_array('cms-pages', $argument)) {

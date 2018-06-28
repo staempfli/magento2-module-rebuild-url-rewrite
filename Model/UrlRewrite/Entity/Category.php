@@ -34,12 +34,16 @@ class Category implements UrlRewriteEntityInterface
         $this->categoryCollection = $categoryCollection;
     }
 
-    public function rebuild(int $storeId)
+    public function rebuild(int $storeId, array $arguments = [])
     {
         $this->categoryCollection->clear();
         $this->categoryCollection->setStoreId($storeId)
             ->addAttributeToSelect(['url_path', 'url_key'])
             ->addAttributeToFilter('level', array('gt' => 1));
+
+        if ($arguments) {
+            $this->categoryCollection->addFieldToFilter('entity_id', ['in' => $arguments]);
+        }
 
         $this->urlRewrite
             ->setStoreId($storeId)

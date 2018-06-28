@@ -37,7 +37,7 @@ class Cms implements UrlRewriteEntityInterface
         $this->cmsCollection = $cmsCollection;
     }
 
-    public function rebuild(int $storeId)
+    public function rebuild(int $storeId, array $arguments = [])
     {
         $this->cmsCollection
             ->addStoreFilter($storeId)
