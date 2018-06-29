@@ -39,7 +39,7 @@ class Category implements UrlRewriteEntityInterface
         $this->categoryCollection->clear();
         $this->categoryCollection->setStoreId($storeId);
         $this->categoryCollection->addAttributeToSelect(['url_path', 'url_key']);
-        $this->categoryCollection->addAttributeToFilter('level', array('gt' => 1));
+        $this->categoryCollection->addAttributeToFilter('level', ['gt' => 1]);
 
         if ($arguments) {
             $this->categoryCollection->addFieldToFilter('entity_id', ['in' => $arguments]);
