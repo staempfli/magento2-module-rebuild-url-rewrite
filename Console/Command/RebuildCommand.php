@@ -100,6 +100,13 @@ final class RebuildCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
+
+        try {
+            $this->appState->getAreaCode();
+        } catch (\Magento\Framework\Exception\LocalizedException $e) {
+            $this->appState->setAreaCode('adminhtml');
+        }
+
         $stores = $this->getAllStoreIds();
         $argument = $this->getArgumentValue(self::INPUT_ENTITY);
 
@@ -127,20 +134,14 @@ final class RebuildCommand extends Command
     private function getAllStoreIds(): array
     {
         $data = [];
-        $stores = $this->storeRepository->getList();
+        $stores = $this->storeRepository->getList() ?? [];
         $storeOptions = $this->getOptionValue(self::INPUT_STORES);
-
-        try {
-            $areaCode = $this->appState->getAreaCode();
-        } catch (\Magento\Framework\Exception\LocalizedException $e) {
-            $this->appState->setAreaCode('adminhtml');
-        }
 
         foreach ($stores as $store) {
             if ((int)$store->getId() === 0 || !$store->isActive()) {
                 continue;
             }
-            if ($storeOptions && !in_array($store->getId(), $storeOptions)) {
+            if ($storeOptions && !\in_array($store->getId(), $storeOptions, false)) {
                 continue;
             }
             $data[(int)$store->getId()] = $store->getCode();
@@ -172,7 +173,7 @@ final class RebuildCommand extends Command
      * @param string $value
      * @return array
      */
-    private function getFilteredValue(string $value)
+    private function getFilteredValue(string $value) : array
     {
         return array_filter(explode(',', trim($value, '= ')));
     }
