@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace Staempfli\RebuildUrlRewrite\Model;
 
-use Magento\Framework\App\ResourceConnection;
 use Magento\UrlRewrite\Model\UrlPersistInterface;
 
 class UrlRewrite implements UrlRewriteInterface
@@ -61,15 +60,18 @@ class UrlRewrite implements UrlRewriteInterface
      */
     public function setRewriteGenerator($rewriteGenerator)
     {
+        if (!$this->validateObject($rewriteGenerator, 'generate')) {
+            throw new \LogicException('Invalid Rewrite Generator!');
+        }
         $this->rewriteGenerator = $rewriteGenerator;
         return $this;
     }
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Collection\AbstractCollection|Magento\Cms\Model\ResourceModel\Page\Collection $collection
+     * @param \Magento\Framework\Data\Collection $collection
      * @return $this
      */
-    public function setCollection($collection)
+    public function setCollection(\Magento\Framework\Data\Collection $collection)
     {
         $this->collection = $collection;
         return $this;
@@ -80,9 +82,9 @@ class UrlRewrite implements UrlRewriteInterface
      */
     public function rebuild()
     {
-        foreach ($this->collection as $item) {
+        foreach ($this->getCollection() as $item) {
             try {
-                $this->deleteByEntity((int) $item->getId());
+                $this->deleteByEntity((int)$item->getId());
                 $this->urlPersist->replace(
                     $this->getRewriteGenerator()->generate($item)
                 );
@@ -90,6 +92,16 @@ class UrlRewrite implements UrlRewriteInterface
                 //
             }
         }
+    }
+
+    /**
+     * @param object $object
+     * @param string $method
+     * @return bool
+     */
+    private function validateObject($object, string $method = '') : bool
+    {
+        return \is_object($object) && method_exists($object, $method);
     }
 
     private function getStoreId()

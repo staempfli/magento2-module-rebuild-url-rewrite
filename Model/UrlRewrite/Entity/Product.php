@@ -25,7 +25,7 @@ class Product implements UrlRewriteEntityInterface
     /**
      * @var ProductCollection
      */
-    private $productcollection;
+    private $productCollection;
 
     public function __construct(
         UrlRewriteInterface $urlRewrite,
@@ -34,24 +34,24 @@ class Product implements UrlRewriteEntityInterface
     ) {
         $this->urlRewrite = $urlRewrite;
         $this->productUrlRewriteGenerator = $productUrlRewriteGenerator;
-        $this->productcollection = $productCollection;
+        $this->productCollection = $productCollection;
     }
 
     public function rebuild(int $storeId, array $arguments = [])
     {
-        $this->productcollection->clear();
-        $this->productcollection->setStoreId($storeId)
-            ->addAttributeToSelect(['url_path', 'url_key']);
+        $this->productCollection->clear();
+        $this->productCollection->setStoreId($storeId);
+        $this->productCollection->addAttributeToSelect(['url_path', 'url_key']);
 
         if ($arguments) {
-            $this->productcollection->addFieldToFilter('entity_id', ['in' => $arguments]);
+            $this->productCollection->addFieldToFilter('entity_id', ['in' => $arguments]);
         }
 
         $this->urlRewrite
             ->setStoreId($storeId)
             ->setEntity(ProductUrlRewriteGenerator::ENTITY_TYPE)
             ->setRewriteGenerator($this->productUrlRewriteGenerator)
-            ->setCollection($this->productcollection)
+            ->setCollection($this->productCollection)
             ->rebuild();
     }
 }

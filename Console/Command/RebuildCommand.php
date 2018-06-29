@@ -22,7 +22,7 @@ final class RebuildCommand extends Command
 {
     const INPUT_STORES = 'stores';
     const INPUT_PRODUCTS = 'products';
-    const INPUT_CAEGORIES = 'cagtegories';
+    const INPUT_CATEGORIES = 'categories';
     const INPUT_ENTITY = 'entities';
 
     /**
@@ -84,7 +84,7 @@ final class RebuildCommand extends Command
                     "Product ID's"
                 ),
                 new InputOption(
-                    self::INPUT_CAEGORIES,
+                    self::INPUT_CATEGORIES,
                     'c',
                     InputArgument::OPTIONAL,
                     "Category ID's"
@@ -101,13 +101,12 @@ final class RebuildCommand extends Command
     {
         $this->input = $input;
         $stores = $this->getAllStoreIds();
-
         $argument = $this->getArgumentValue(self::INPUT_ENTITY);
 
         foreach ($stores as $storeId => $storeCode) {
             if ($argument && in_array('categories', $argument)) {
                 $output->writeln(sprintf('Rebuild category urls for store: [%s]', $storeCode));
-                $this->categoryFactory->create()->rebuild($storeId, $this->getOptionValue(self::INPUT_CAEGORIES));
+                $this->categoryFactory->create()->rebuild($storeId, $this->getOptionValue(self::INPUT_CATEGORIES));
             }
 
             if ($argument && in_array('products', $argument)) {

@@ -22,10 +22,10 @@ interface UrlRewriteInterface
     public function setEntity(string $entity);
 
     /**
-     * @param \Magento\Catalog\Model\ResourceModel\Collection\AbstractCollection|Magento\Cms\Model\ResourceModel\Page\Collection $collection
+     * @param \Magento\Framework\Data\Collection $collection
      * @return $this
      */
-    public function setCollection($collection);
+    public function setCollection(\Magento\Framework\Data\Collection $collection);
 
     /**
      * @param $rewriteGenerator
