@@ -39,8 +39,8 @@ final class UrlRewriteTest extends \PHPUnit\Framework\TestCase
         $this->urlRewriteGenerator->expects($this->any())->method('generate')->willReturn([]);
 
         $this->collection = $this->getMockBuilder(\Magento\Framework\Data\Collection::class)
-            ->setMethods(['getItems', 'getIterator'])
             ->disableOriginalConstructor()
+            ->setMethods(['getItems', 'getIterator'])
             ->getMock();
         $collectionItems = [
             new \Magento\Framework\DataObject(
