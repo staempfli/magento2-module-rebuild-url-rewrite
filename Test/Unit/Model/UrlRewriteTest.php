@@ -119,20 +119,20 @@ final class UrlRewriteTest extends \PHPUnit\Framework\TestCase
 
     public function testRebuildFailedBecauseNoEntityIsSet()
     {
+        $this->expectException(\LogicException::class);
         $this->urlRewrite->setCollection($this->collection)->setRewriteGenerator($this->urlRewriteGenerator)->rebuild();
-        $this->assertTrue(true);
     }
 
     public function testRebuildFailedBecauseNoStoreIsSet()
     {
+        $this->expectException(\LogicException::class);
         $this->urlRewrite->setEntity('category')->setCollection($this->collection)->rebuild();
-        $this->assertTrue(true);
     }
 
     public function testRebuildFailedBecauseNoUrlGeneratorIsSet()
     {
+        $this->expectException(\LogicException::class);
         $this->urlRewrite->setEntity('category')->setStoreId(1)->setCollection($this->collection)->rebuild();
-        $this->assertTrue(true);
     }
 
     public function testRebuildFailedBecauseNoCollectionIsSet()

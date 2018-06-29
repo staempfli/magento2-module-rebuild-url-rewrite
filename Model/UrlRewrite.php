@@ -34,7 +34,8 @@ class UrlRewrite implements UrlRewriteInterface
 
     public function __construct(
         UrlPersistInterface $urlPersist
-    ) {
+    )
+    {
         $this->urlPersist = $urlPersist;
     }
 
@@ -78,19 +79,16 @@ class UrlRewrite implements UrlRewriteInterface
     }
 
     /**
-     * @return void
+     * @throws \Exception
+     * @throws \Magento\UrlRewrite\Model\Exception\UrlAlreadyExistsException
      */
     public function rebuild()
     {
         foreach ($this->getCollection() as $item) {
-            try {
-                $this->deleteByEntity((int)$item->getId());
-                $this->urlPersist->replace(
-                    $this->getRewriteGenerator()->generate($item)
-                );
-            } catch (\Exception $e) {
-                //
-            }
+            $this->deleteByEntity((int)$item->getId());
+            $this->urlPersist->replace(
+                $this->getRewriteGenerator()->generate($item)
+            );
         }
     }
 
@@ -99,7 +97,7 @@ class UrlRewrite implements UrlRewriteInterface
      * @param string $method
      * @return bool
      */
-    private function validateObject($object, string $method = '') : bool
+    private function validateObject($object, string $method = ''): bool
     {
         return \is_object($object) && method_exists($object, $method);
     }
