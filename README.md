@@ -1,5 +1,9 @@
 # Magento 2 Rebuild URL Rewrites
 
+[![Build Status](https://travis-ci.org/staempfli/magento2-module-rebuild-url-rewrite.svg?branch=develop)](https://travis-ci.org/staempfli/magento2-module-rebuild-url-rewrite)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b52dfcea9619437d8ae46e311b038c9a)](https://www.codacy.com/app/Staempfli/magento2-module-rebuild-url-rewrite?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=staempfli/magento2-module-rebuild-url-rewrite&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/9171761a16613b73ba35/maintainability)](https://codeclimate.com/github/staempfli/magento2-module-rebuild-url-rewrite/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/9171761a16613b73ba35/test_coverage)](https://codeclimate.com/github/staempfli/magento2-module-rebuild-url-rewrite/test_coverage)
 
 The module adds a CLI which allows to rebuild the following URL Rewrites: `categories`, `products` and `cms-pages`.  
  
