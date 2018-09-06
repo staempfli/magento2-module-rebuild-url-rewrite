@@ -8,6 +8,8 @@ declare(strict_types=1);
 namespace Staempfli\RebuildUrlRewrite\Model;
 
 use Magento\UrlRewrite\Model\UrlPersistInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class UrlRewrite implements UrlRewriteInterface
 {
@@ -31,12 +33,17 @@ class UrlRewrite implements UrlRewriteInterface
      * @var null
      */
     private $rewriteGenerator;
+    /**
+     * @var ConsoleOutput
+     */
+    private $output;
+
 
     public function __construct(
         UrlPersistInterface $urlPersist
-    )
-    {
+    ) {
         $this->urlPersist = $urlPersist;
+        $this->output = new ConsoleOutput();
     }
 
     public function setStoreId(int $storeId)
@@ -78,18 +85,27 @@ class UrlRewrite implements UrlRewriteInterface
         return $this;
     }
 
-    /**
-     * @throws \Exception
-     * @throws \Magento\UrlRewrite\Model\Exception\UrlAlreadyExistsException
-     */
     public function rebuild()
     {
-        foreach ($this->getCollection() as $item) {
-            $this->deleteByEntity((int)$item->getId());
-            $this->urlPersist->replace(
-                $this->getRewriteGenerator()->generate($item)
-            );
+        $collection = $this->getCollection();
+        $progressBar = new ProgressBar($this->output, $collection->getSize());
+        $progressBar->start();
+        foreach ($collection as $item) {
+            try {
+                $progressBar->advance();
+                $item->setStoreId($this->getStoreId());
+                $this->deleteByEntity((int)$item->getId());
+                $this->urlPersist->replace(
+                    $this->getRewriteGenerator()->generate($item)
+                );
+            } catch (\LogicException $e) {
+                throw new \LogicException($e->getMessage());
+            } catch (\Exception $e) {
+                $this->output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+            }
         }
+        $progressBar->finish();
+        $this->output->writeln('');
     }
 
     /**
